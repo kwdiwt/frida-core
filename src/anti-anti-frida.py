@@ -36,8 +36,9 @@ if __name__ == "__main__":
         for patch_str in all_patch_string:
             addr_all = section.search_all(patch_str)  # Patch 内存字符串
             for addr in addr_all:
-                patch = [ord(n) for n in list(patch_str)[::-1]]
-                log_color(f"[*] Patching section name={section.name} offset={hex(section.file_offset + addr)} orig:{patch_str} new:{''.join(list(patch_str)[::-1])}")
+                patch_values = "".join(random.sample(random_charset, len(patch_str)))
+                patch = [ord(n) for n in patch_values]
+                log_color(f"[*] Patching section name={section.name} offset={hex(section.file_offset + addr)} orig:{patch_str} new:{patch_values}")
                 binary.patch_address(section.file_offset + addr, patch)
  
     binary.write(input_file)
